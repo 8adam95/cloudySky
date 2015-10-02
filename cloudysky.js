@@ -16,7 +16,7 @@ function makeCloudySky(){
 		}
 	renderer.setClearColor(0xffffff);
 	
-	var prefix = 'environment/skybox/background/textures/cube/skybox/';
+	var prefix = 'plugins/cloudySky/background/';
 	
 
 	scene.add( makeSkybox( [
@@ -27,14 +27,6 @@ function makeCloudySky(){
 		prefix+'py.jpg',
 		prefix+'ny.jpg'
 	
-		/*
-		prefix+'4xalt2t1ygtln3b/nx.jpg',
-		prefix+'nlupf116bvti4cu/ny.jpg',
-		prefix+'0xeiipbmhblmsge/nz.jpg',
-		prefix+'xdcgqmavfj73i2k/px.jpg',
-		prefix+'1enung9i323b9w8/py.jpg',
-		prefix+'zmkr0ocroepvh9g/pz.jpg'
-		*/
 	], 8000 ));
 
 }
