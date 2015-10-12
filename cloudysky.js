@@ -1,15 +1,17 @@
 /* ------------------------------------------------- CLOUDY SKY -------------------------------------------------*/
+//See skydome.js for more information on format of a plugin.
 
 CloudySky = function()
 {
-
 };
 
 
 
-CloudySky.initStatic = function (){
+CloudySky.initLoadtime = function (){
+    //initStatic
     availablePlugins.push("CloudySky");
 }
+
 CloudySky.init = function (){
     CloudySky.shown=false;
 }
@@ -90,3 +92,5 @@ CloudySky.hide = function(){
     if(hl)
         scene.remove(hl); //never tested
 }
+
+CloudySky.initLoadtime();
