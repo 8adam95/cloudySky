@@ -1,14 +1,21 @@
 /* ------------------------------------------------- CLOUDY SKY -------------------------------------------------*/
 
+CloudySky = function()
+{
 
-function initStaticCloudySky(){
+};
+
+
+
+CloudySky.initStatic = function (){
     availablePlugins.push("CloudySky");
 }
-function initCloudySky(){
-    CloudySkyShown=false;
+CloudySky.init = function (){
+    CloudySky.shown=false;
 }
 
-function initMainLight(x,y,z, color, intensity){
+CloudySky.initMainLight = function (x,y,z, color, intensity)
+{
     // LIGHTS
     //THREE.DirectionalLight (ray are parallel, source seems very far => sun) or THREE.SpotLight (ray seems coming from a unique source) can handle shadows
     light = new THREE.SpotLight(color, intensity);
@@ -26,9 +33,9 @@ function initMainLight(x,y,z, color, intensity){
         scene.add(light);
 }
 
-function showCloudySky(){
-    assert(!CloudySkyShown);
-    CloudySkyShown = true;
+CloudySky.show = function (){
+    assert(!CloudySky.shown);
+    CloudySky.shown = true;
 	function makeSkybox( urls, size ) {
 
             var hemiLight = new THREE.HemisphereLight(0xffbbaa, 0x040404, 1);
@@ -55,8 +62,8 @@ function showCloudySky(){
 
         var mainlight = scene.getObjectByName( "mainlight" );
         if(!mainlight)
-            initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
-        //initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+            CloudySky.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+        //CloudySky.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
 
 
 
@@ -76,10 +83,10 @@ function showCloudySky(){
     renderer.setClearColor(0xffffff);
 }
 
-function hideCloudySky(){
-    assert(CloudySkyShown);
-    CloudySkyShown=false;
+CloudySky.hide = function(){
+    assert(CloudySky.shown);
+    CloudySky.shown=false;
     var hl = scene.getObjectByName( "hemiLight" );
     if(hl)
-        scene.remove(o);
+        scene.remove(hl); //never tested
 }
