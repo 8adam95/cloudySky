@@ -93,9 +93,9 @@ CloudySky.hide = function(){
         scene.remove(hl); //never tested
 }
 
-CloudySky.goPerspective(){
+CloudySky.goPerspective = function(){
 }
-CloudySky.goOrthographic(){
+CloudySky.goOrthographic = function(){
 }
 
 CloudySky.initLoadtime();
