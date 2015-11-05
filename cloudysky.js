@@ -12,11 +12,11 @@ CloudySky.initLoadtime = function (){
     availablePlugins.push("CloudySky");
 }
 
-CloudySky.init = function (){
-    CloudySky.shown=false;
+CloudySky.prototype.init = function (){
+    this.shown=false;
 }
 
-CloudySky.initMainLight = function (x,y,z, color, intensity)
+CloudySky.prototype.initMainLight = function (x,y,z, color, intensity)
 {
     // LIGHTS
     //THREE.DirectionalLight (ray are parallel, source seems very far => sun) or THREE.SpotLight (ray seems coming from a unique source) can handle shadows
@@ -35,9 +35,9 @@ CloudySky.initMainLight = function (x,y,z, color, intensity)
         scene.add(light);
 }
 
-CloudySky.show = function (){
-    assert(!CloudySky.shown);
-    CloudySky.shown = true;
+CloudySky.prototype.show = function (){
+    assert(!this.shown);
+    this.shown = true;
 	function makeSkybox( urls, size ) {
 
             var hemiLight = new THREE.HemisphereLight(0xffbbaa, 0x040404, 1);
@@ -64,8 +64,8 @@ CloudySky.show = function (){
 
         var mainlight = scene.getObjectByName( "mainlight" );
         if(!mainlight)
-            CloudySky.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
-        //CloudySky.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+        //this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
 
 
 
@@ -85,17 +85,21 @@ CloudySky.show = function (){
     renderer.setClearColor(0xffffff);
 }
 
-CloudySky.hide = function(){
-    assert(CloudySky.shown);
-    CloudySky.shown=false;
+CloudySky.prototype.hide = function(){
+    assert(this.shown);
+    this.shown=false;
     var hl = scene.getObjectByName( "hemiLight" );
     if(hl)
         scene.remove(hl); //never tested
 }
 
-CloudySky.goPerspective = function(){
+CloudySky.prototype.goPerspective = function(){
 }
-CloudySky.goOrthographic = function(){
+CloudySky.prototype.goOrthographic = function(){
 }
 
 CloudySky.initLoadtime();
+
+
+assert(PatternMatchClass(CloudySky, Patterns.classMethods.atmospher_plugin));
+
