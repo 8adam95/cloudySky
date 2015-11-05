@@ -48,17 +48,18 @@ CloudySky.prototype.show = function (){
             else
                 scene.add(hemiLight);
 
-			var skyboxCubemap = THREE.ImageUtils.loadTextureCube( urls );
+			this.skyboxCubemap = THREE.ImageUtils.loadTextureCube( urls );
 			skyboxCubemap.format = THREE.RGBFormat;
-			var skyboxShader = THREE.ShaderLib['cube'];
+			this.skyboxShader = THREE.ShaderLib['cube'];
 			skyboxShader.uniforms['tCube'].value = skyboxCubemap;
-			return new THREE.Mesh(
+			this.skymesh = new THREE.Mesh(
 				new THREE.BoxGeometry( size, size, size ),
 				new THREE.ShaderMaterial({
 					fragmentShader : skyboxShader.fragmentShader, vertexShader : skyboxShader.vertexShader,
 					uniforms : skyboxShader.uniforms, depthWrite : false, side : THREE.BackSide
 				})
 			);
+            return this.skymesh;
 		}
 
 
@@ -66,8 +67,6 @@ CloudySky.prototype.show = function (){
         if(!mainlight)
             this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
         //this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
-
-
 
 	var prefix = 'plugins/cloudySky/background/';
 
@@ -83,6 +82,7 @@ CloudySky.prototype.show = function (){
 	], 8000 ));
 
     renderer.setClearColor(0xffffff);
+    this.status = "Up and running";
 }
 
 CloudySky.prototype.hide = function(){
@@ -91,6 +91,20 @@ CloudySky.prototype.hide = function(){
     var hl = scene.getObjectByName( "hemiLight" );
     if(hl)
         scene.remove(hl); //never tested
+    
+    /*
+                fixme:
+                DOES NOT REMOVE THE PLUGIN
+    */
+    
+    console.error("This will not work:");
+    scene.remove(this.skymesh);
+    //this.skymesh.dispose();
+    this.skymesh = null;
+    this.skyboxCubemap=null;
+    this.skyboxShader=null;
+    renderer.setClearColor(0x999999);
+
 }
 
 CloudySky.prototype.goPerspective = function(){
@@ -98,8 +112,22 @@ CloudySky.prototype.goPerspective = function(){
 CloudySky.prototype.goOrthographic = function(){
 }
 
+CloudySky.prototype.setShadowQuality = function(shadowMapWidth, shadowMapHeight){
+    //this.light is ambient ==> irrelevant
+    this.light.shadowMapWidth = shadowMapWidth; // default is 512
+    this.light.shadowMapHeight = shadowMapHeight; // default is 512
+    this.light.shadowMap.dispose(); // important
+    this.light.shadowMap = null;
+}
+
+CloudySky.prototype.getInfo = function(){ return "CloudySky plugin. (c) 2015. " + this.status;}; //Download or clone from github.com/8adam95/cloudySky.git into DesignSoftware/plugins.
+
 CloudySky.initLoadtime();
 
 
-assert(PatternMatchClass(CloudySky, Patterns.classMethods.atmospher_plugin));
+
+//todo: Plugin (Unit) Tests by mp5
+
+var __a = PatternMatchClass(CloudySky, Patterns.classMethods.atmospher_plugin);
+assert(__a);
 
