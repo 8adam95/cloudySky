@@ -86,10 +86,15 @@ CloudySky.prototype.show = function (){
 
 	], 8000 ));
 
-    
+    //Customising the bed grid
     var g=scene.getObjectByName("grid");
     g.material.color.setRGB(0,0,1);
     //scene.remove(g)
+
+    //Customising the bed surface
+    var bed=scene.getObjectByName("bed");
+    //bed.material.color.setRGB(0.3,0.3,0.3)
+
     
     renderer.setClearColor(0xffffff);
     this.status = "Up and running";
