@@ -65,9 +65,13 @@ CloudySky.prototype.show = function (){
 
 
         var mainlight = scene.getObjectByName( "mainlight" );
-        if(!mainlight)
+        if(!mainlight) //nevere true
             this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
-        //this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+        else{
+            //mainlight.position.set(x,y,z);
+            scene.remove(mainlight);
+            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+        }
 
 	var prefix = 'plugins/cloudySky/background/';
 
@@ -85,6 +89,7 @@ CloudySky.prototype.show = function (){
     
     var g=scene.getObjectByName("grid");
     g.material.color.setRGB(0,0,1);
+    //scene.remove(g)
     
     renderer.setClearColor(0xffffff);
     this.status = "Up and running";
