@@ -82,6 +82,10 @@ CloudySky.prototype.show = function (){
 
 	], 8000 ));
 
+    
+    var g=scene.getObjectByName("grid");
+    g.material.color.setRGB(0,0,1);
+    
     renderer.setClearColor(0xffffff);
     this.status = "Up and running";
 }
