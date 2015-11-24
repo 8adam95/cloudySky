@@ -38,7 +38,8 @@ CloudySky.prototype.initMainLight = function (x,y,z, color, intensity)
 CloudySky.prototype.show = function (){
     assert(!this.shown);
     this.shown = true;
-	function makeSkybox( urls, size ) {
+	function _makeSkybox(cskyobj, urls, size ) {
+            //note: this is not accessible here. Using cskyobj instead.
 
             var hemiLight = new THREE.HemisphereLight(0xffbbaa, 0x040404, 1);
         	hemiLight.name = "hemiLight";
@@ -48,18 +49,18 @@ CloudySky.prototype.show = function (){
             else
                 scene.add(hemiLight);
 
-			this.skyboxCubemap = THREE.ImageUtils.loadTextureCube( urls );
-			skyboxCubemap.format = THREE.RGBFormat;
-			this.skyboxShader = THREE.ShaderLib['cube'];
-			skyboxShader.uniforms['tCube'].value = skyboxCubemap;
-			this.skymesh = new THREE.Mesh(
+			cskyobj.skyboxCubemap = THREE.ImageUtils.loadTextureCube( urls );
+			cskyobj.skyboxCubemap.format = THREE.RGBFormat;
+			cskyobj.skyboxShader = THREE.ShaderLib['cube'];
+			cskyobj.skyboxShader.uniforms['tCube'].value = cskyobj.skyboxCubemap;
+			cskyobj.skymesh = new THREE.Mesh(
 				new THREE.BoxGeometry( size, size, size ),
 				new THREE.ShaderMaterial({
-					fragmentShader : skyboxShader.fragmentShader, vertexShader : skyboxShader.vertexShader,
-					uniforms : skyboxShader.uniforms, depthWrite : false, side : THREE.BackSide
+					fragmentShader : cskyobj.skyboxShader.fragmentShader, vertexShader : cskyobj.skyboxShader.vertexShader,
+					uniforms : cskyobj.skyboxShader.uniforms, depthWrite : false, side : THREE.BackSide
 				})
 			);
-            return this.skymesh;
+            return cskyobj.skymesh;
 		}
 
 
@@ -71,7 +72,7 @@ CloudySky.prototype.show = function (){
 	var prefix = 'plugins/cloudySky/background/';
 
 
-	scene.add( makeSkybox( [
+	scene.add( _makeSkybox(this, [
 		prefix+'px.jpg',
 		prefix+'nx.jpg',
 		prefix+'nz.jpg',
@@ -97,7 +98,6 @@ CloudySky.prototype.hide = function(){
                 DOES NOT REMOVE THE PLUGIN
     */
     
-    console.error("This will not work:");
     scene.remove(this.skymesh);
     //this.skymesh.dispose();
     this.skymesh = null;
