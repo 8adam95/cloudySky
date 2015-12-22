@@ -88,13 +88,16 @@ CloudySky.prototype.show = function (){
 
     //Customising the bed grid
     var g=scene.getObjectByName("grid");
-    g.material.color.setRGB(0,0,1);
-    //scene.remove(g)
+    if(g){
+        g.material.color.setRGB(0,0,1);
+        //scene.remove(g)
+    }
 
     //Customising the bed surface
     var bed=scene.getObjectByName("bed");
-    //bed.material.color.setRGB(0.3,0.3,0.3)
-
+    if(bed){
+        //bed.material.color.setRGB(0.3,0.3,0.3)
+    }
     
     renderer.setClearColor(0xffffff);
     this.status = "Up and running";
@@ -127,6 +130,7 @@ CloudySky.prototype.goOrthographic = function(){
 }
 
 CloudySky.prototype.setShadowQuality = function(shadowMapWidth, shadowMapHeight){
+    if(!CONFIG.performance.useShadow) return;
     //this.light is ambient ==> irrelevant
     this.light.shadowMapWidth = shadowMapWidth; // default is 512
     this.light.shadowMapHeight = shadowMapHeight; // default is 512
