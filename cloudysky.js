@@ -1,7 +1,7 @@
 /* ------------------------------------------------- CLOUDY SKY -------------------------------------------------*/
 //See skydome.js for more information on format of a plugin.
 
-CloudySky = function()
+var CloudySky = function()
 {
 };
 
@@ -10,11 +10,11 @@ CloudySky = function()
 CloudySky.initLoadtime = function (){
     //initStatic
     availablePlugins.push("CloudySky");
-}
+};
 
 CloudySky.prototype.init = function (){
     this.shown=false;
-}
+};
 
 CloudySky.prototype.initMainLight = function (x,y,z, color, intensity)
 {
@@ -33,7 +33,7 @@ CloudySky.prototype.initMainLight = function (x,y,z, color, intensity)
         Logger.info("light not initialized");
     else
         scene.add(light);
-}
+};
 
 CloudySky.prototype.show = function (){
     assert(!this.shown);
@@ -51,8 +51,8 @@ CloudySky.prototype.show = function (){
 
 			cskyobj.skyboxCubemap = THREE.ImageUtils.loadTextureCube( urls );
 			cskyobj.skyboxCubemap.format = THREE.RGBFormat;
-			cskyobj.skyboxShader = THREE.ShaderLib['cube'];
-			cskyobj.skyboxShader.uniforms['tCube'].value = cskyobj.skyboxCubemap;
+			cskyobj.skyboxShader = THREE.ShaderLib.cube;
+			cskyobj.skyboxShader.uniforms.tCube.value = cskyobj.skyboxCubemap;
 			cskyobj.skymesh = new THREE.Mesh(
 				new THREE.BoxGeometry( size, size, size ),
 				new THREE.ShaderMaterial({
@@ -101,7 +101,7 @@ CloudySky.prototype.show = function (){
     
     renderer.setClearColor(0xffffff);
     this.status = "Up and running";
-}
+};
 
 CloudySky.prototype.hide = function(){
     assert(this.shown);
@@ -122,12 +122,12 @@ CloudySky.prototype.hide = function(){
     this.skyboxShader=null;
     renderer.setClearColor(0x999999);
 
-}
+};
 
 CloudySky.prototype.goPerspective = function(){
-}
+};
 CloudySky.prototype.goOrthographic = function(){
-}
+};
 
 CloudySky.prototype.setShadowQuality = function(shadowMapWidth, shadowMapHeight){
     if(!CONFIG.performance.useShadow) return;
@@ -136,7 +136,7 @@ CloudySky.prototype.setShadowQuality = function(shadowMapWidth, shadowMapHeight)
     this.light.shadowMapHeight = shadowMapHeight; // default is 512
     this.light.shadowMap.dispose(); // important
     this.light.shadowMap = null;
-}
+};
 
 CloudySky.prototype.getInfo = function(){ return "CloudySky plugin. (c) 2015. " + this.status;}; //Download or clone from github.com/8adam95/cloudySky.git into DesignSoftware/plugins.
 
