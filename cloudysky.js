@@ -16,7 +16,7 @@ CloudySky.prototype.init = function (){
     this.shown=false;
 };
 
-CloudySky.prototype.initMainLight = function (x,y,z, color, intensity)
+CloudySky.prototype.initMainLight = function (x,y,z, color, intensity, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT)
 {
     // LIGHTS
     //THREE.DirectionalLight (ray are parallel, source seems very far => sun) or THREE.SpotLight (ray seems coming from a unique source) can handle shadows
@@ -24,10 +24,11 @@ CloudySky.prototype.initMainLight = function (x,y,z, color, intensity)
     light.position.set(x,y,z);
     light.visible= true;
     light.castShadow = true; //Enable shadow casting
+    console.warn("light.shadowDarkness")
     light.shadowDarkness = 0.5; //0 means no shadows,1 means pure black shadow
     //light.shadowCameraVisible = true; //Show the shadow camera (debugging)
-    light.shadowMapWidth = 2048; // default is 512
-    light.shadowMapHeight = 2048; // default is 512
+    light.shadow.mapSize.width = SHADOW_MAP_WIDTH; //2048; // default is 512
+    light.shadow.mapSize.height = SHADOW_MAP_HEIGHT; //2048; // default is 512
     light.name="mainlight";
     if(!light)
         Logger.info("light not initialized");
@@ -63,14 +64,17 @@ CloudySky.prototype.show = function (){
             return cskyobj.skymesh;
 		}
 
-
+        console.warn("get_shadowmap_size() is called inside atmosphere.show()")
+        var shmz = get_shadowmap_size();
+        var SHADOW_MAP_WIDTH = shmz[0];
+        var SHADOW_MAP_HEIGHT = shmz[1];
         var mainlight = scene.getObjectByName( "mainlight" );
         if(!mainlight) //nevere true
-            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
         else{
             //mainlight.position.set(x,y,z);
             scene.remove(mainlight);
-            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5);
+            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
         }
 
 	var prefix = 'plugins/cloudySky/background/';
@@ -98,7 +102,7 @@ CloudySky.prototype.show = function (){
     if(bed){
         //bed.material.color.setRGB(0.3,0.3,0.3)
     }
-    
+
     renderer.setClearColor(0xffffff);
     this.status = "Up and running";
 };
@@ -109,12 +113,12 @@ CloudySky.prototype.hide = function(){
     var hl = scene.getObjectByName( "hemiLight" );
     if(hl)
         scene.remove(hl); //never tested
-    
+
     /*
                 fixme:
                 DOES NOT REMOVE THE PLUGIN
     */
-    
+
     scene.remove(this.skymesh);
     //this.skymesh.dispose();
     this.skymesh = null;
@@ -132,8 +136,8 @@ CloudySky.prototype.goOrthographic = function(){
 CloudySky.prototype.setShadowQuality = function(shadowMapWidth, shadowMapHeight){
     if(!CONFIG.performance.useShadow) return;
     //this.light is ambient ==> irrelevant
-    this.light.shadowMapWidth = shadowMapWidth; // default is 512
-    this.light.shadowMapHeight = shadowMapHeight; // default is 512
+    this.light.shadow.mapSize.width = shadowMapWidth; // default is 512
+    this.light.shadow.mapSize.hight = shadowMapHeight; // default is 512
     this.light.shadowMap.dispose(); // important
     this.light.shadowMap = null;
 };
