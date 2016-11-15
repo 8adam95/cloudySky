@@ -22,7 +22,7 @@ CloudySky.prototype.init = function (SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT){
     this.SHADOW_MAP_HEIGHT = SHADOW_MAP_HEIGHT;
 };
 
-CloudySky.prototype.initMainLight = function (x,y,z, color, intensity, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT)
+CloudySky.prototype.initLights = function (x,y,z, color, intensity, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT)
 {
     assert(SHADOW_MAP_WIDTH);
     assert(SHADOW_MAP_HEIGHT);
@@ -78,11 +78,11 @@ CloudySky.prototype.show = function (){
         var SHADOW_MAP_HEIGHT = shmz[1];
         var mainlight = scene.getObjectByName( "mainlight" );
         if(!mainlight) //nevere true
-            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, this.SHADOW_MAP_WIDTH, this.SHADOW_MAP_HEIGHT);
+            this.initLights(-110*5, -90*5, 126*5, 0xff4444, 1.5, this.SHADOW_MAP_WIDTH, this.SHADOW_MAP_HEIGHT);
         else{
             //mainlight.position.set(x,y,z);
             scene.remove(mainlight);
-            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, this.SHADOW_MAP_WIDTH, this.SHADOW_MAP_HEIGHT);
+            this.initLights(-110*5, -90*5, 126*5, 0xff4444, 1.5, this.SHADOW_MAP_WIDTH, this.SHADOW_MAP_HEIGHT);
         }
 
 	var prefix = 'plugins/cloudySky/background/';
