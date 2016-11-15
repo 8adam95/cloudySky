@@ -5,6 +5,8 @@ var CloudySky = function()
 {
 };
 
+CloudySky.prototype = Object.create(AtmospherPlugin.prototype);
+CloudySky.prototype.constructor = CloudySky;
 
 
 CloudySky.initLoadtime = function (){
@@ -64,8 +66,8 @@ CloudySky.prototype.show = function (){
             return cskyobj.skymesh;
 		}
 
-        console.warn("get_shadowmap_size() is called inside atmosphere.show()")
-        var shmz = get_shadowmap_size();
+        console.warn("get_default_shadowmap_size() is called inside atmosphere.show()")
+        var shmz = this.get_default_shadowmap_size();
         var SHADOW_MAP_WIDTH = shmz[0];
         var SHADOW_MAP_HEIGHT = shmz[1];
         var mainlight = scene.getObjectByName( "mainlight" );
