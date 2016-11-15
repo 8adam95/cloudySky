@@ -14,12 +14,18 @@ CloudySky.initLoadtime = function (){
     availablePlugins.push("CloudySky");
 };
 
-CloudySky.prototype.init = function (){
+CloudySky.prototype.init = function (SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT){
     this.shown=false;
+    assert(SHADOW_MAP_WIDTH);
+    assert(SHADOW_MAP_HEIGHT);
+    this.SHADOW_MAP_WIDTH = SHADOW_MAP_WIDTH;
+    this.SHADOW_MAP_HEIGHT = SHADOW_MAP_HEIGHT;
 };
 
 CloudySky.prototype.initMainLight = function (x,y,z, color, intensity, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT)
 {
+    assert(SHADOW_MAP_WIDTH);
+    assert(SHADOW_MAP_HEIGHT);
     // LIGHTS
     //THREE.DirectionalLight (ray are parallel, source seems very far => sun) or THREE.SpotLight (ray seems coming from a unique source) can handle shadows
     light = new THREE.SpotLight(color, intensity);
@@ -72,11 +78,11 @@ CloudySky.prototype.show = function (){
         var SHADOW_MAP_HEIGHT = shmz[1];
         var mainlight = scene.getObjectByName( "mainlight" );
         if(!mainlight) //nevere true
-            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
+            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, this.SHADOW_MAP_WIDTH, this.SHADOW_MAP_HEIGHT);
         else{
             //mainlight.position.set(x,y,z);
             scene.remove(mainlight);
-            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
+            this.initMainLight(-110*5, -90*5, 126*5, 0xff4444, 1.5, this.SHADOW_MAP_WIDTH, this.SHADOW_MAP_HEIGHT);
         }
 
 	var prefix = 'plugins/cloudySky/background/';
@@ -113,8 +119,11 @@ CloudySky.prototype.hide = function(){
     assert(this.shown);
     this.shown=false;
     var hl = scene.getObjectByName( "hemiLight" );
-    if(hl)
-        scene.remove(hl); //never tested
+    if(hl) scene.remove(hl); //never tested
+
+    var ml = scene.getObjectByName( "mainlight" );
+    _expect(ml);
+    if(ml) scene.remove(ml); //never tested
 
     /*
                 fixme:
